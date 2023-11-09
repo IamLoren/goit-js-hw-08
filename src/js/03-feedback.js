@@ -2,7 +2,6 @@ import localStorageAPI from './localstorage.js';
 
 const contactFormEl = document.querySelector('.feedback-form');
 const userData = {};
-
 const fillContactFormField = () => {
   const userDataFromLS = localStorageAPI.load('contactFormInfo');
 
@@ -22,9 +21,11 @@ const onContactFormFieldChange = ({ target: contactFormField }) => {
   const contactFormFieldValue = contactFormField.value;
   const contactFormFieldName = contactFormField.name;
 
-  userData[contactFormFieldName] = contactFormFieldValue;
+  const userDataFromLS = localStorageAPI.load('contactFormInfo') || {};
 
-  localStorageAPI.save('contactFormInfo', userData);
+  userDataFromLS[contactFormFieldName] = contactFormFieldValue;
+
+  localStorageAPI.save('contactFormInfo', userDataFromLS);
 };
 
 const onContactFormSubmit = event => {
@@ -34,5 +35,5 @@ const onContactFormSubmit = event => {
   localStorageAPI.remove('contactFormInfo');
 };
 
-contactFormEl.addEventListener('change', onContactFormFieldChange);
+contactFormEl.addEventListener('input', onContactFormFieldChange);
 contactFormEl.addEventListener('submit', onContactFormSubmit);
